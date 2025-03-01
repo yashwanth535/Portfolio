@@ -93,9 +93,9 @@ const Portfolio = () => {
     Projects
   </h2>
   <div className="flex flex-col gap-6 mt-4">
-    <div className="flex flex-row gap-6">
+    <div className="flex flex-col md:flex-row md:gap-6">
       <div
-        className="w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
+        className="w-full mb-4 md:mb-0 md:w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
         onClick={() => window.open("https://printease.yashwanth.site/", "_blank")}
       >
         <h3 className="text-xl font-bold flex justify-between items-center">
@@ -121,7 +121,7 @@ const Portfolio = () => {
         </div>
       </div>
       <div
-        className="w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
+        className="w-full mb-4 md:mb-0 md:w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
         onClick={() => window.open("https://moneymind.yashwanth.site/", "_blank")}
       >
         <h3 className="text-xl font-bold flex justify-between items-center">
@@ -147,7 +147,7 @@ const Portfolio = () => {
         </div>
       </div>
       <div
-        className="w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
+        className="w-full mb-4 md:mb-0 md:w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
         onClick={() => window.open("https://skywatch.yashwanth.site/", "_blank")}
       >
         <h3 className="text-xl font-bold flex justify-between items-center">
@@ -171,9 +171,9 @@ const Portfolio = () => {
         </div>
       </div>
     </div>
-    <div className="flex flex-row gap-6">
+    <div className="flex flex-col md:flex-row md:gap-6">
       <div
-        className="w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
+        className="w-full mb-4 md:mb-0 md:w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
         onClick={() =>
           window.open("https://dispensarymanagement.yashwanth.site/", "_blank")
         }
@@ -202,7 +202,7 @@ const Portfolio = () => {
         </div>
       </div>
       <div
-        className="w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
+        className="w-full mb-4 md:mb-0 md:w-1/3 bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:translate-y-2 cursor-pointer"
         onClick={() => window.open("https://dummy-tictactoe.com", "_blank")}
       >
         <h3 className="text-xl font-bold flex justify-between items-center">
@@ -228,7 +228,7 @@ const Portfolio = () => {
           ></iframe>
         </div>
       </div>
-      <div className="w-1/3"></div>
+      <div className="md:w-1/3"></div>
     </div>
   </div>
 </section>
