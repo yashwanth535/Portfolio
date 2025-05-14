@@ -4,6 +4,7 @@ import Projects from './pages/projects';
 import Resume from './pages/resume';
 import './App.css';
 
+
 function App() {
   return (
     <Router>
