@@ -1,79 +1,98 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-// Replace the particles import with a simpler implementation
-// since the external library might be causing issues
 const Portfolio = () => {
+  // Refs for section visibility
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
   const projectsRef = useRef(null);
   const contactRef = useRef(null);
   const navRef = useRef(null);
 
+  // State for section visibility animations
   const [aboutVisible, setAboutVisible] = useState(false);
   const [skillsVisible, setSkillsVisible] = useState(false);
   const [projectsVisible, setProjectsVisible] = useState(false);
   const [contactVisible, setContactVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Custom particles implementation instead of using the library
+  // Custom particles implementation
   const [particles, setParticles] = useState([]);
 
+  // --- LOGIC FOR PROJECTS CAROUSEL ---
+  const projectsContainerRef = useRef(null);
+  const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 });
+
+  const majorProjects = [
+    {
+      name: "Flavour Fusion",
+      description: "Discover and share unique recipes with a vibrant food community.",
+      image: "/fusion.png",
+      link: "https://fusion.yashwanth.site",
+    },
+    {
+      name: "Kriya",
+      description: "Monitor the uptime and response time of your favorite URLs.",
+      image: "/kriya.png",
+      link: "https://kriya.yashwanth.site",
+    },
+    {
+      name: "InShareX",
+      description: "A fast and secure file sharing platform for all your needs.",
+      image: "/insharex.png",
+      link: "https://insharex.yashwanth.site/",
+    },
+  ];
+
+  // Effect to calculate drag constraints for the projects carousel
   useEffect(() => {
-    // Create custom particles
+    const calculateConstraints = () => {
+      if (projectsContainerRef.current) {
+        const container = projectsContainerRef.current;
+        const maxDrag = container.scrollWidth - container.offsetWidth;
+        setDragConstraints({ right: 0, left: -maxDrag });
+      }
+    };
+
+    calculateConstraints();
+    window.addEventListener("resize", calculateConstraints);
+
+    return () => window.removeEventListener("resize", calculateConstraints);
+  }, [majorProjects]);
+
+
+  // Effect for particles
+  useEffect(() => {
     const particleCount = 50;
-    const newParticles = [];
-    
-    for (let i = 0; i < particleCount; i++) {
-      newParticles.push({
-        id: i,
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 5 + 2,
-        speedX: (Math.random() - 0.5) * 2,
-        speedY: (Math.random() - 0.5) * 2,
-        opacity: Math.random() * 0.5 + 0.3,
-        color: ['#f97316', '#fb923c', '#fdba74', '#fed7aa'][Math.floor(Math.random() * 4)]
-      });
-    }
-    
+    const newParticles = Array.from({ length: particleCount }, (_, i) => ({
+      id: i,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 5 + 2,
+      speedX: (Math.random() - 0.5) * 2,
+      speedY: (Math.random() - 0.5) * 2,
+      opacity: Math.random() * 0.5 + 0.3,
+      color: ['#f97316', '#fb923c', '#fdba74', '#fed7aa'][Math.floor(Math.random() * 4)],
+    }));
     setParticles(newParticles);
-    
+
+    let animationId;
     const animateParticles = () => {
-      setParticles(prevParticles => 
-        prevParticles.map(particle => {
-          let newX = particle.x + particle.speedX;
-          let newY = particle.y + particle.speedY;
-          
-          // Bounce off edges
-          if (newX < 0 || newX > window.innerWidth) {
-            particle.speedX *= -1;
-            newX = particle.x + particle.speedX;
-          }
-          
-          if (newY < 0 || newY > window.innerHeight) {
-            particle.speedY *= -1;
-            newY = particle.y + particle.speedY;
-          }
-          
-          return {
-            ...particle,
-            x: newX,
-            y: newY
-          };
-        })
-      );
-      
+      setParticles(prev => prev.map(p => {
+        let newX = p.x + p.speedX;
+        let newY = p.y + p.speedY;
+        if (newX < 0 || newX > window.innerWidth) p.speedX *= -1;
+        if (newY < 0 || newY > window.innerHeight) p.speedY *= -1;
+        return { ...p, x: newX, y: newY };
+      }));
       animationId = requestAnimationFrame(animateParticles);
     };
-    
-    let animationId = requestAnimationFrame(animateParticles);
-    
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
+    animationId = requestAnimationFrame(animateParticles);
+    return () => cancelAnimationFrame(animationId);
   }, []);
 
+  // Effect for intersection observer and scroll listeners
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -94,15 +113,7 @@ const Portfolio = () => {
     if (projectsRef.current) observer.observe(projectsRef.current);
     if (contactRef.current) observer.observe(contactRef.current);
 
-    // Handle scroll for sticky header effect
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -113,204 +124,162 @@ const Portfolio = () => {
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const navHeight = 130; // Combined height of both header elements
+      const navHeight = 130;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 via-orange-100 to-orange-50 relative overflow-hidden">
       <style jsx global>{`
-        html {
-          scroll-padding-top: 130px; /* Combined height of your sticky header */
-        }
-        
-        @keyframes sparkle {
-          0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
-          50% { transform: scale(1) rotate(180deg); opacity: 1; }
-        }
+  /* Global HTML scroll behavior for sticky headers */
+  html {
+    scroll-padding-top: 130px; /* Combined height of your sticky header */
+  }
 
-        @keyframes float-up {
-          0% { transform: translateY(100vh) scale(0); opacity: 0; }
-          50% { opacity: 0.8; }
-          100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
+  /* Keyframe Animations */
+  @keyframes sparkle {
+    0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1) rotate(180deg); opacity: 1; }
+  }
 
-        @keyframes subtle-shift {
-          0% { background-position: 0 0; }
-          100% { background-position: 100px 100px; }
-        }
+  @keyframes float-up {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-100px) scale(1); opacity: 0; }
+  }
 
-        .sparkle {
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,165,0,0) 70%);
-          animation: sparkle 3s infinite;
-          pointer-events: none;
-        }
+  @keyframes subtle-shift {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+  }
 
-        .floating-particle {
-          position: absolute;
-          width: 4px;
-          height: 4px;
-          background: linear-gradient(to right, rgba(255,165,0,0.4), rgba(255,165,0,0));
-          border-radius: 50%;
-          animation: float-up 8s infinite linear;
-          pointer-events: none;
-        }
+  /* Sparkle effect styles */
+  .sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,165,0,0) 70%);
+    animation: sparkle 3s infinite;
+    pointer-events: none;
+  }
 
-        .animate-subtle-shift {
-          animation: subtle-shift 20s linear infinite;
-        }
+  /* Floating particle effect styles */
+  .floating-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(to right, rgba(255,165,0,0.4), rgba(255,165,0,0));
+    border-radius: 50%;
+    animation: float-up 8s infinite linear;
+    pointer-events: none;
+  }
 
-        .skills-container, .projects-container {
-          -webkit-overflow-scrolling: touch;
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-          scroll-snap-type: x mandatory;
-          scroll-behavior: smooth;
-          -webkit-scroll-snap-type: x mandatory;
-          padding: 1rem;
-          position: relative;
-          width: 100%;
-        }
-        
-        .skills-container::-webkit-scrollbar, .projects-container::-webkit-scrollbar {
-          display: none;
-        }
+  /* Subtle background shift animation */
+  .animate-subtle-shift {
+    animation: subtle-shift 20s linear infinite;
+  }
 
-        .skill-card, .project-card {
-          scroll-snap-align: center;
-          scroll-snap-stop: always;
-          min-width: calc(80vw - 3rem);
-          margin-right: 1rem;
-          padding: 1.5rem;
-          border-radius: 1rem;
-          background: rgba(255, 255, 255, 0.3);
-        }
+  /* Scrollbar hiding for skills and projects containers (if still needed, as Tailwind usually handles overflow) */
+  /* If you are using Tailwind's overflow-x-auto, these might not be strictly necessary */
+  .skills-container, .projects-container {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; /* For IE/Edge */
+    scrollbar-width: none; /* For Firefox */
+  }
+  .skills-container::-webkit-scrollbar, .projects-container::-webkit-scrollbar {
+    display: none; /* For Webkit browsers like Chrome, Safari */
+  }
 
-        @media (min-width: 768px) {
-          .skill-card, .project-card {
-            min-width: unset;
-            margin-right: 0;
-            padding: 1.5rem;
-          }
+  /* Gradient text style */
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #f97316, #fb923c);
+    font-weight: bold;
+  }
 
-          .skills-container, .projects-container {
-            padding: 1rem 0;
-            overflow: visible;
-          }
-        }
+  .gradient-text:hover {
+    opacity: 0.9;
+  }
 
-        .card-content {
-          padding: 0.5rem;
-        }
+  /* Scroll fade effects (for mobile scroll indication) */
+  .scroll-fade-left {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.3), transparent);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .scroll-fade-right {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-        .gradient-text {
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
-          background-image: linear-gradient(to right, #f97316, #fb923c);
-          font-weight: bold;
-        }
+  /* Scroll indicator dots (for mobile scroll indication) */
+  .scroll-indicator {
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
+  }
 
-        .gradient-text:hover {
-          opacity: 0.9;
-        }
+  .scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(249, 115, 22, 0.3);
+    transition: all 0.3s ease;
+  }
 
-        .scroll-fade-left {
-          background: linear-gradient(to right, rgba(255, 255, 255, 0.3), transparent);
-          position: absolute;
-          left: 0;
-          top: 0;
-          height: 100%;
-          width: 60px;
-          pointer-events: none;
-          z-index: 1;
-        }
-        
-        .scroll-fade-right {
-          background: linear-gradient(to left, rgba(255, 255, 255, 0.3), transparent);
-          position: absolute;
-          right: 0;
-          top: 0;
-          height: 100%;
-          width: 60px;
-          pointer-events: none;
-          z-index: 1;
-        }
+  .scroll-dot.active {
+    background-color: rgba(249, 115, 22, 1);
+    transform: scale(1.2);
+  }
 
-        .scroll-indicator {
-          position: absolute;
-          bottom: -1rem;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 0.5rem;
-          z-index: 2;
-        }
+  /* Media query to hide scroll fades and indicators on larger screens */
+  @media (min-width: 768px) {
+    .scroll-fade-left, .scroll-fade-right, .scroll-indicator {
+      display: none;
+    }
+  }
+  
+  /* Custom particles (if you have JavaScript injecting these) */
+  .particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+`}</style>
 
-        .scroll-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: rgba(249, 115, 22, 0.3);
-          transition: all 0.3s ease;
-        }
-
-        .scroll-dot.active {
-          background-color: rgba(249, 115, 22, 1);
-          transform: scale(1.2);
-        }
-
-        @media (min-width: 768px) {
-          .scroll-fade-left, .scroll-fade-right, .scroll-indicator {
-            display: none;
-          }
-        }
-        
-        /* Custom particles */
-        .particle {
-          position: fixed;
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 0;
-        }
-      `}</style>
-
-      {/* Custom particles implementation */}
+      {/* Particles and other background elements */}
       <div className="fixed inset-0 z-0">
-        {particles.map(particle => (
-          <div
-            key={particle.id}
-            className="particle"
-            style={{
-              left: `${particle.x}px`,
-              top: `${particle.y}px`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              backgroundColor: particle.color,
-              opacity: particle.opacity
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="fixed w-full h-full pointer-events-none z-0">
-        <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,rgba(255,165,0,0.1)_0%,transparent_50%)] animate-slow-spin"></div>
+        {particles.map(p => <div key={p.id} className="particle" style={{...p, left: `${p.x}px`, top: `${p.y}px`, width: `${p.size}px`, height: `${p.size}px`, backgroundColor: p.color, opacity: p.opacity, position: 'fixed', borderRadius: '50%', pointerEvents: 'none'}} />)}
       </div>
 
       <div className="relative z-10">
@@ -467,6 +436,7 @@ const Portfolio = () => {
             </div>
           </motion.section>
 
+          {/* --- UPDATED PROJECTS SECTION --- */}
           <motion.section
             id="projects"
             ref={projectsRef}
@@ -474,114 +444,65 @@ const Portfolio = () => {
             animate={projectsVisible ? "visible" : "hidden"}
             variants={fadeInUp}
             transition={{ duration: 0.6 }}
-            className="backdrop-blur-lg bg-white/20 rounded-2xl p-8 mb-12 shadow-xl border border-white/30 transform transition-all duration-300 relative overflow-hidden"
+            className="backdrop-blur-lg bg-white/20 rounded-2xl py-8 mb-12 shadow-xl border border-white/30 relative"
           >
-            <motion.h2 
-              className="text-3xl gradient-text mb-6"
-              transition={{ duration: 0.2 }}
-            >
-              Projects
-            </motion.h2>
+            <div className="flex items-center mb-6 relative px-8">
+              <button
+                onClick={() => navigate("/projects")}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold absolute right-6 top-0"
+              >
+                Projects
+              </button>
+              <motion.h2
+                className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent mx-auto"
+                transition={{ duration: 0.2 }}
+              >
+                Projects
+              </motion.h2>
+            </div>
+
             <div className="relative">
               <div className="scroll-fade-left md:hidden"></div>
               <div className="scroll-fade-right md:hidden"></div>
-              <div 
-                className="projects-container overflow-x-auto md:overflow-visible pb-6"
-                onScroll={(e) => {
-                  const container = e.currentTarget;
-                  const scrollPosition = container.scrollLeft;
-                  const cardWidth = container.offsetWidth;
-                  const activeIndex = Math.round(scrollPosition / cardWidth);
-                  
-                  // Update active dot
-                  const dots = document.querySelectorAll('.project-dot');
-                  dots.forEach((dot, index) => {
-                    if (index === activeIndex) {
-                      dot.classList.add('active');
-                    } else {
-                      dot.classList.remove('active');
-                    }
-                  });
-                }}
+              <motion.div
+                ref={projectsContainerRef}
+                drag="x"
+                dragConstraints={dragConstraints}
+                className="projects-container flex overflow-x-auto gap-6 pb-4 snap-x snap-start scroll-smooth px-8 scroll-px-8"
               >
-                <div className="grid grid-flow-col md:grid-flow-row auto-cols-[80vw] md:auto-cols-fr md:grid-cols-2 gap-6 md:gap-8">
+                {majorProjects.map((project) => (
                   <motion.div
-                    className="project-card bg-white/30 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300"
-                    whileHover={{ 
-                      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                      background: "rgba(255, 255, 255, 0.4)"
+                    key={project.name}
+                    className="project-card flex-shrink-0 w-[80vw] md:w-[30vw] md:max-w-[400px] bg-white/30 rounded-xl overflow-hidden shadow-lg transition-all duration-300 backdrop-blur-sm"
+                    whileHover={{
+                      scale: 1.03,
+                      backgroundColor: "rgba(255,255,255,0.4)",
                     }}
                   >
                     <img
-                      src="/printease.png"
-                      alt="PrintEase Preview"
-                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                      src={project.image}
+                      alt={`${project.name} preview`}
+                      className="w-full h-56 object-cover pointer-events-none"
                     />
                     <div className="p-6">
-                      <div className="card-content">
-                        <h3 className="text-2xl gradient-text mb-2">
-                          PrintEase
-                        </h3>
-                        <p className="text-gray-700 mb-4">
-                          A website to share PDFs with printing shops for streamlined printing.
-                        </p>
-                        <motion.a
-                          whileHover={{ backgroundColor: "#ea580c" }}
-                          whileTap={{ scale: 0.95 }}
-                          href="https://printease.yashwanth.site/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg transition-all duration-300"
-                        >
-                          Visit Project
-                        </motion.a>
-                      </div>
+                      <h3 className="text-2xl font-bold mb-2 gradient-text">
+                        {project.name}
+                      </h3>
+                      <p className="text-gray-700 mb-4">{project.description}</p>
+                      <motion.a
+                        whileHover={{ backgroundColor: "#ea580c" }}
+                        whileTap={{ scale: 0.95 }}
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg transition-all duration-300"
+                      >
+                        Visit Project
+                      </motion.a>
                     </div>
                   </motion.div>
-
-                  <motion.div
-                    className="project-card bg-white/30 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300"
-                    whileHover={{ 
-                      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                      background: "rgba(255, 255, 255, 0.4)"
-                    }}
-                  >
-                    <img
-                      src="/moneymind.png"
-                      alt="MoneyMind Preview"
-                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                    <div className="p-6">
-                      <div className="card-content">
-                        <h3 className="text-2xl gradient-text mb-2">
-                          MoneyMind
-                        </h3>
-                        <p className="text-gray-700 mb-4">
-                          A website to track your finances, create budgets, savings, etc.
-                        </p>
-                        <motion.a
-                          whileHover={{ backgroundColor: "#ea580c" }}
-                          whileTap={{ scale: 0.95 }}
-                          href="https://moneymind.yashwanth.site/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg transition-all duration-300"
-                        >
-                          Visit Project
-                        </motion.a>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              <div className="scroll-indicator md:hidden">
-                {[0, 1].map((index) => (
-                  <div 
-                    key={index} 
-                    className={`scroll-dot project-dot ${index === 0 ? 'active' : ''}`}
-                  />
                 ))}
-              </div>
+              </motion.div>
             </div>
           </motion.section>
 
@@ -658,5 +579,6 @@ const Portfolio = () => {
     </div>
   );
 };
+
 
 export default Portfolio;

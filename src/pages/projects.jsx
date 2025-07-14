@@ -2,41 +2,58 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const projects = [
+  // TeamSync (keep data, do not show)
   {
     name: "TeamSync",
     description: "A real-time team collaboration platform for seamless project management.",
-    image: "/teamsync.png", // Placeholder, update as needed
+    image: "/teamsync.png",
     link: "https://teamsync.yashwanth.site/",
-    type: "major"
+    type: "major",
+    hidden: true
   },
+  // PrintEase (keep data, do not show)
   {
     name: "PrintEase",
     description: "A website to share PDFs with printing shops for streamlined printing.",
     image: "/printease.png",
     link: "https://printease.yashwanth.site/",
-    type: "major"
+    type: "major",
+    hidden: true
   },
+  // Flavour Fusion (show, update link and image)
   {
     name: "Flavour Fusion",
     description: "Discover and share unique recipes with a vibrant food community.",
-    image: "/flavourfusion.png", // Placeholder, update as needed
-    link: "https://flavourfusion.yashwanth.site/",
+    image: "/fusion.png",
+    link: "https://fusion.yashwanth.site",
     type: "major"
   },
+  // Kriya (url pinger, show, update name, link, image)
+  {
+    name: "Kriya",
+    description: "Monitor the uptime and response time of your favorite URLs.",
+    image: "/kriya.png",
+    link: "https://kriya.yashwanth.site",
+    type: "major"
+  },
+  // InShareX (show, update image if needed)
   {
     name: "InShareX",
     description: "A fast and secure file sharing platform for all your needs.",
-    image: "/insharex.png", // Placeholder, update as needed
+    image: "/insharex.png",
     link: "https://insharex.yashwanth.site/",
     type: "major"
   },
+  // SyncHub (keep data, do not show)
   {
     name: "SyncHub",
     description: "Centralized hub for syncing data across multiple devices and platforms.",
-    image: "/synchub.png", // Placeholder, update as needed
+    image: "/synchub.png",
     link: "https://synchub.yashwanth.site/",
-    type: "major"
+    type: "major",
+    hidden: true
   },
+  // SkyWatch (show as minor)
   {
     name: "SkyWatch",
     description: "A weather monitoring and alert system for your local area.",
@@ -44,18 +61,12 @@ const projects = [
     link: "https://skywatch.yashwanth.site/",
     type: "minor"
   },
+  // MoneyMind (show as minor)
   {
     name: "MoneyMind",
     description: "A website to track your finances, create budgets, savings, etc.",
     image: "/moneymind.png",
     link: "https://moneymind.yashwanth.site/",
-    type: "minor"
-  },
-  {
-    name: "URL Pinger",
-    description: "Monitor the uptime and response time of your favorite URLs.",
-    image: "/urlpinger.png", // Placeholder, update as needed
-    link: "https://urlpinger.yashwanth.site/",
     type: "minor"
   }
 ];
@@ -128,7 +139,7 @@ const Projects = () => {
             Major Projects
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full px-4 md:px-8">
-            {projects.filter(p => p.type === "major").map((project, idx) => (
+            {projects.filter(p => p.type === "major" && !p.hidden).map((project, idx) => (
               <motion.div
                 key={project.name}
                 className="project-card bg-white/30 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300"
@@ -182,7 +193,7 @@ const Projects = () => {
             Minor Projects
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full px-4 md:px-8">
-            {projects.filter(p => p.type === "minor").map((project, idx) => (
+            {projects.filter(p => p.type === "minor" && !p.hidden).map((project, idx) => (
               <motion.div
                 key={project.name}
                 className="project-card bg-white/30 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300"
