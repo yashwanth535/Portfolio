@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import profilePhoto from "../assets/profile.jpeg";
 
 const Portfolio = () => {
   // Refs for section visibility
@@ -283,70 +284,120 @@ const Portfolio = () => {
       </div>
 
       <div className="relative z-10">
-        <header className="relative bg-white/10 backdrop-blur-md text-gray-800 text-center py-8 border-b border-white/20 select-none">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent pointer-events-none"
-          >
-            Yashwanth Munikuntla
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-xl mt-2 text-gray-700 pointer-events-none"
-          >
-            Developer | Designer | Tech Enthusiast
-          </motion.p>
-        </header>
+      <header className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-md text-gray-800 border-b border-white/20 select-none">
+  <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between">
+    
+    {/* Name */}
+    <motion.h1 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent text-center md:text-left"
+    >
+      Yashwanth Munikuntla
+    </motion.h1>
 
-        <nav ref={navRef} className={`${scrolled ? 'fixed top-0' : 'relative'} left-0 right-0 z-50 backdrop-blur-lg bg-white/10 border-b border-white/20 py-4 px-6 transition-all duration-300`}>
-          <div className="max-w-4xl mx-auto flex justify-center md:gap-8 overflow-visible">
-            {[
-              { text: "About Me", id: "about" },
-              { text: "Skills", id: "skills" },
-              { text: "Projects", id: "projects" },
-              { text: "Contact", id: "contact" }
-            ].map((item) => (
-              <motion.button
-                key={item.text}
-                onClick={() => scrollToSection(item.id)}
-                whileHover={{ scale: 1.05, color: "#f97316" }}
-                whileTap={{ scale: 0.95 }}
-                className="text-gray-800 hover:text-orange-600 transition-all duration-300 text-lg font-medium relative group cursor-pointer px-3 mx-2"
-              >
-                {item.text}
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-              </motion.button>
-            ))}
-          </div>
-        </nav>
+    {/* Navigation */}
 
-        <main className={`flex-grow p-6 md:p-12 max-w-6xl mx-auto w-full ${scrolled ? 'mt-[72px]' : 'mt-0'} z-10`}>
-          <motion.section
-            id="about"
-            ref={aboutRef}
-            initial="hidden"
-            animate={aboutVisible ? "visible" : "hidden"}
-            variants={fadeInUp}
-            transition={{ duration: 0.6 }}
-            className="backdrop-blur-lg bg-white/20 rounded-2xl p-8 mb-12 shadow-xl border border-white/30"
-          >
-            <motion.h2 
-              className="text-3xl font-bold text-gray-800 mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent"
-              transition={{ duration: 0.2 }}
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="mt-4 md:mt-0 flex flex-wrap gap-4 md:gap-6"
+    >
+      {[
+        { text: "About Me", id: "about" },
+        { text: "Skills", id: "skills" },
+        { text: "Projects", id: "projects" },
+        { text: "Contact", id: "contact" }
+      ].map((item) => (
+        <motion.button
+          key={item.text}
+          onClick={() => scrollToSection(item.id)}
+          whileHover={{ scale: 1.05, color: "#f97316" }}
+          whileTap={{ scale: 0.95 }}
+          className="text-lg font-medium text-gray-800 hover:text-orange-600 transition relative group px-2"
+        >
+          {item.text}
+          <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        </motion.button>
+      ))}
+    </motion.nav>
+
+
+  </div>
+</header>
+
+      
+
+      <main className="flex-grow p-6 md:p-12 max-w-6xl mx-auto w-full mt-[72px] z-10">
+        <motion.section
+          id="about"
+          ref={aboutRef}
+          initial="hidden"
+          animate={aboutVisible ? "visible" : "hidden"}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+          className="backdrop-blur-lg bg-white/20 rounded-2xl p-8 mb-12 shadow-xl border border-white/30"
+        >
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            {/* Left side - Title and Profile Photo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={aboutVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:w-1/3 flex flex-col items-center text-center"
             >
-              About Me
-            </motion.h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Hello! I am Yashwanth Munikuntla, a passionate developer and designer
-              who loves building user-friendly applications and creative solutions.
-              My goal is to combine design thinking and development skills to create
-              impactful digital experiences.
-            </p>
-          </motion.section>
+              <motion.div
+                whileHover={{ rotateY: 10, rotateX: -5, scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="w-64 h-64"
+              >
+                <img
+                  src={profilePhoto}
+                  alt="Yashwanth Munikuntla"
+                  className="w-full h-full rounded-full object-cover shadow-lg"
+                />
+              </motion.div>
+            </motion.div>
+
+
+            {/* Right side - Content */}
+            <div className="lg:w-2/3">
+              <motion.p 
+                initial={{ opacity: 0, x: 20 }}
+                animate={aboutVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-lg text-gray-700 leading-relaxed"
+              >
+                Hello! I am Yashwanth Munikuntla, a passionate developer and designer
+                who loves building user-friendly applications and creative solutions.
+                My goal is to combine design thinking and development skills to create
+                impactful digital experiences.
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={aboutVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="mt-6 space-y-4"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                  <span className="text-gray-700">Full-stack development with modern technologies</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                  <span className="text-gray-700">UI/UX design and user experience optimization</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                  <span className="text-gray-700">Problem-solving and creative thinking</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
 
           <motion.section
             id="skills"
@@ -364,10 +415,8 @@ const Portfolio = () => {
               Skills
             </motion.h2>
             <div className="relative">
-              <div className="scroll-fade-left md:hidden"></div>
-              <div className="scroll-fade-right md:hidden"></div>
               <div 
-                className="skills-container overflow-x-auto md:overflow-visible pb-6"
+                className="skills-container"
                 onScroll={(e) => {
                   const container = e.currentTarget;
                   const scrollPosition = container.scrollLeft;
@@ -387,9 +436,9 @@ const Portfolio = () => {
               >
                 <div className="grid grid-flow-col md:grid-flow-row auto-cols-[80vw] md:auto-cols-fr md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6">
                   {[
-                    { name: "Frontend Development", skills: ["HTML", "CSS", "JavaScript", "React"] },
-                    { name: "Backend Development", skills: ["Node.js", "Express", "Python", "Django"] },
-                    { name: "Design", skills: ["UI/UX Design", "Figma", "Adobe XD"] },
+                    { name: "Programming Languages", skills: ["C", "C++", "Java"] },
+                    { name: "Frontend Development", skills: ["React", "JavaScript","Tailwind css" ] },
+                    { name: "Backend Development", skills: ["Node.js", "Express", "MongoDB"] },
                   ].map((category, index) => (
                     <motion.div
                       key={index}
