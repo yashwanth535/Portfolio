@@ -17,95 +17,114 @@ const Portfolio = () => {
   const [contactVisible, setContactVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const projectsContainerRef = useRef(null);
   const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 });
 
   const majorProjects = [
-    // {
-    //   name: "TeamSync",
-    //   description: "A real-time team collaboration platform for seamless project management.",
-    //   image: "/teamsync.png",
-    //   link: "https://teamsync.yashwanth.site/",
-    //   type: "major",
-    //   hidden: true
-    // },
-    // PrintEase (keep data, do not show)
     {
       name: "PrintEase",
-      description: "A website to share PDFs with printing shops for streamlined printing.",
+      description:
+        "A website to share PDFs with printing shops for streamlined printing.",
       image: "/printease.png",
       link: "https://printease.yashwanth.site/",
-      vercellink:"https://print-ease-frontend.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/PrintEase-frontend",
-      backendRepo:"https://github.com/yashwanth535/PrintEase-backend",
+      vercellink: "https://print-ease-frontend.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/PrintEase-frontend",
+      backendRepo: "https://github.com/yashwanth535/PrintEase-backend",
       type: "major",
+      body: `
+  PrintEase is a full-stack MERN (MongoDB, Express, React, Node.js) application that connects users with local print service vendors. On the frontend we used React with Tailwind and Vite, providing a smooth file‑upload interface that uses Supabase-signed URLs for secure PDF transfer. Vendors manage incoming orders in real time within an Express dashboard, and we integrated Firebase Storage for storing and serving PDF documents. 
+  
+  On the backend, we built RESTful APIs in Express.js with JWT authentication for Customers and Vendors, a 50% advance payment flow secured via Stripe, and Socket.io–powered WebSockets to push live order status updates (accepted, printing, out for delivery). We also automated PDF cleanup once jobs complete, and provided PDF preview links in both user and vendor dashboards—resulting in a fully end‑to‑end, real‑time print ordering system.`,
     },
-    // Kriya (url pinger, show, update name, link, image)
     {
       name: "Kriya",
       description: "Monitor the uptime and response time of your favorite URLs.",
       image: "/kriya.png",
       link: "https://kriya.yashwanth.site",
-      vercellink:"https://kriya-frontend-ten.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/Kriya-frontend",
-      backendRepo:"https://github.com/yashwanth535/Kriya-backend",
-      type: "major"
+      vercellink: "https://kriya-frontend-ten.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/Kriya-frontend",
+      backendRepo: "https://github.com/yashwanth535/Kriya-backend",
+      type: "major",
+      body: `
+  Kriya is a Node.js + Express monitoring tool with a React frontend built on Vite. It allows users to register URLs they want tracked, and runs scheduled health checks using node-cron on the backend to ping these endpoints at configurable intervals. We stored uptime/response metrics in MongoDB and expose them via REST APIs, which power a dynamic dashboard showing historical graphs.
+  
+  To deliver near real‑time alerts, Kriya uses Socket.io for WebSocket notifications: when an endpoint goes down or exceeds a response threshold, users immediately see toast alerts on the frontend and can opt into email notifications. The result is a lightweight but robust uptime monitoring platform with customizable alerts and live stats.`,
     },
-    // InShareX (show, update image if needed)
     {
       name: "InShareX",
       description: "A fast and secure file sharing platform for all your needs.",
       image: "/insharex.png",
       link: "https://insharex.yashwanth.site/",
-      vercellink:"https://insharex-frontend.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/InShareX-frontend",
-      backendRepo:"https://github.com/yashwanth535/InShareX-backend",
-      type: "major"
+      vercellink: "https://insharex-frontend.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/InShareX-frontend",
+      backendRepo: "https://github.com/yashwanth535/InShareX-backend",
+      type: "major",
+      body: `
+  InShareX is a peer‑to‑peer file sharing service built with React, WebRTC, and WebSockets. The frontend implements chunked file transfer using the browser’s WebRTC data channels for direct browser‑to‑browser transfers, and falls back to a secure Express‑based relay server when peers cannot connect directly. A chat overlay lets users communicate during transfers, and transfer progress is tracked with live updates.
+  
+  On the backend, we use Node.js + Express to handle signaling via Socket.io and manage one‑time download URLs. File metadata and user permissions are stored in MongoDB. We added transfer resume support and optional encryption for file chunks, ensuring high speed and security without requiring users to register or install an app.`,
     },
-    // Flavour Fusion (show, update link and image)
     {
       name: "Flavour Fusion",
-      description: "Discover and share unique recipes with a vibrant food community.",
+      description:
+        "Discover and share unique recipes with a vibrant food community.",
       image: "/fusion.png",
       link: "https://fusion.yashwanth.site",
-      vercellink:"https://fusion-frontend-omega.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/Fusion-frontend",
-      backendRepo:"https://github.com/yashwanth535/Fusion-backend",
-      type: "major"
+      vercellink: "https://fusion-frontend-omega.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/Fusion-frontend",
+      backendRepo: "https://github.com/yashwanth535/Fusion-backend",
+      type: "major",
+      body: `
+  Flavour Fusion is a social cooking platform built on the MERN stack (MongoDB, Express, React, Node.js) with Tailwind CSS for styling. Users can create accounts, post recipes with images, tag ingredients, and browse a personalized feed powered by keyword‑based searches. The frontend uses React Context for global state and React Router for client‑side navigation.
+  
+  The backend features RESTful APIs in Express with JWT‑based authentication and role‑based access control. We implemented file uploads via Multer for recipe images, real‑time notifications for comments using Socket.io, and full-text search indexing in MongoDB for efficient recipe discovery. Flavour Fusion fosters community engagement through likes, comments, and curated recipe collections.`,
     },
-    // MoneyMind (show as minor)
     {
       name: "MoneyMind",
-      description: "A website to track your finances, create budgets, savings, etc.",
+      description:
+        "A website to track your finances, create budgets, savings, etc.",
       image: "/moneymind.png",
       link: "https://moneymind.yashwanth.site/",
-      vercellink:"https://moneymind-frontend.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/MoneyMind-frontend",
-      backendRepo:"https://github.com/yashwanth535/MoneyMind-backend",
-      type: "minor"
+      vercellink: "https://moneymind-frontend.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/MoneyMind-frontend",
+      backendRepo: "https://github.com/yashwanth535/MoneyMind-backend",
+      type: "minor",
+      body: `
+  MoneyMind is a personal finance dashboard developed with React (Vite) on the frontend and Express + MongoDB on the backend. It provides expense tracking, budget setup, and savings goals visualization. We integrated Tesseract.js for OCR scanning of receipts so users can snap a photo and automatically log transactions.
+  
+  The backend offers REST endpoints secured with JWT authentication, and data analytics endpoints that calculate monthly spend breakdowns. We added CSV export and PDF report generation, as well as integration with Chart.js for interactive spending charts. MoneyMind makes budgeting effortless with AI‑powered receipt parsing and rich data visualizations.`,
     },
-    // SkyWatch (show as minor)
     {
       name: "SkyWatch",
       description: "A weather monitoring and alert system for your local area.",
       image: "/skywatch.png",
       link: "https://skywatch.yashwanth.site/",
-      vercellink:"https://skywatch.vercel.app/",
-      frontendRepo:"https://github.com/yashwanth535/SkyWatch",
-      type: "minor"
+      vercellink: "https://skywatch.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/SkyWatch",
+      type: "minor",
+      body: `
+  SkyWatch is a React app that consumes OpenWeatherMap’s public APIs to display current conditions, hourly forecasts, and 7‑day outlooks. We implemented geolocation detection and allow users to save multiple locations. The UI leverages Tailwind CSS for a clean responsive design and Chart.js for rainfall and temperature graphs.
+  
+  For alerts, SkyWatch uses browser push notifications: when temperature or precipitation exceed user-defined thresholds, a service worker sends real‑time alerts. This project demonstrates integrating third‑party weather APIs with modern React patterns and offline‑capable notification features.`,
     },
     {
       name: "Dispensary Management System",
-      description: "Streamlines patient records, medicine inventory, and appointment tracking for efficient dispensary operations.",
+      description:
+        "Streamlines patient records, medicine inventory, and appointment tracking for efficient dispensary operations.",
       image: "/dispensary.png",
       link: "https://dispensarymanagement.yashwanth.site/",
-      cloudflarelink:"https://patient-prescription.pages.dev/",
-      frontendRepo:"https://github.com/yashwanth535/patient-prescription",
-      type: "minor"
+      cloudflarelink: "https://patient-prescription.pages.dev/",
+      frontendRepo: "https://github.com/yashwanth535/patient-prescription",
+      type: "minor",
+      body: `
+  The Dispensary Management System is a MERN‑stack application designed for pharmacies to manage patient profiles, prescription histories, and medication stock. The React frontend provides form‑based data entry for new prescriptions and real‑time inventory levels. We used Redux Toolkit for state management and React Query for server‑state syncing.
+  
+  On the backend, Node.js and Express serve RESTful APIs with JWT authentication for pharmacists and staff roles. MongoDB stores patient and prescription data, and we built endpoints for appointment scheduling and automated low‑stock alerts. This system simplifies daily dispensary workflows with real‑time data updates and role‑based access control.`,
     },
-    
   ];
+  
 
   useEffect(() => {
     const calculateConstraints = () => {
@@ -197,6 +216,7 @@ const Portfolio = () => {
     <>
     
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 via-orange-100 to-orange-50 relative overflow-hidden">
+     
       <div className="fixed inset-0 z-0">
         {particles.map(p => (
           <div
@@ -342,7 +362,7 @@ const Portfolio = () => {
             className="backdrop-blur-lg bg-white/20 rounded-2xl p-8 mb-12 shadow-xl border border-white/30 relative overflow-hidden"
           >
             <motion.h2 
-              className="text-3xl font-bold text-gray-800 mb-6 bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent"
+              className="text-3xl font-bold text-orange-600 mb-6"
               transition={{ duration: 0.2 }}
             >
               Skills
@@ -451,73 +471,147 @@ const Portfolio = () => {
           }`}
         >
           {/* Connector Dot */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-orange-500 border-4 border-white rounded-full z-10" />
+          <motion.div 
+            className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-orange-500 border-4 border-white rounded-full z-10 cursor-pointer"
+            whileHover={{ 
+              scale: 1.3,
+              backgroundColor: "#ea580c",
+              boxShadow: "0 0 20px rgba(249, 115, 22, 0.5)"
+            }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
+          />
 
           {/* Content Card */}
-          <div
-            className={`w-full md:w-1/2 p-6 rounded-lg shadow-md bg-white/40 backdrop-blur-md ${
+          <motion.div
+            className={`w-full md:w-1/2 p-6 rounded-lg shadow-md bg-white/40 backdrop-blur-md cursor-pointer group ${
               index % 2 === 0 ? "ml-10" : "mr-2"
             }`}
+            whileHover={{
+              scale: 1.02,
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            }}
+            whileTap={{ scale: 0.98 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+            }}
+            onClick={() => setSelectedProject(project)}
           >
-            <h3 className="text-2xl font-bold text-orange-600 mb-2">
+            {/* Project Type Badge */}
+            <motion.div
+              className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3"
+              style={{
+                backgroundColor: project.type === "major" ? "rgba(249, 115, 22, 0.2)" : "rgba(156, 163, 175, 0.2)",
+                color: project.type === "major" ? "#ea580c" : "#6b7280",
+              }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {project.type === "major" ? "Major Project" : "Minor Project"}
+            </motion.div>
+
+            <motion.h3 
+              className="text-2xl font-bold text-orange-600 mb-2 group-hover:text-orange-700 transition-colors duration-300"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
               {project.name}
-            </h3>
-            <p className="text-gray-800 mb-4">{project.description}</p>
+            </motion.h3>
+            
+            <motion.p 
+              className="text-gray-800 mb-4 leading-relaxed"
+              whileHover={{ x: 3 }}
+              transition={{ duration: 0.2 }}
+            >
+              {project.description}
+            </motion.p>
 
             {/* Links Section */}
-            <div className="flex flex-wrap gap-4 text-sm">
+            <div className="flex flex-wrap gap-3 text-sm" onClick={(e) => e.stopPropagation()}>
               {project.link && (
-                <a
+                <motion.a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-orange-600 hover:underline gap-1"
+                  className="flex items-center text-orange-600 hover:text-orange-700 gap-1 px-3 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "rgba(249, 115, 22, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaExternalLinkAlt /> Live Demo
-                </a>
+                  <FaExternalLinkAlt className="text-sm" /> Live Demo
+                </motion.a>
               )}
               {project.vercellink && (
-                <a
+                <motion.a
                   href={project.vercellink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-orange-600 hover:underline gap-1"
+                  className="flex items-center text-gray-700 hover:text-gray-900 gap-1 px-3 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "rgba(55, 65, 81, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaCloud /> Vercel
-                </a>
+                  <FaCloud className="text-sm" /> Vercel
+                </motion.a>
               )}
               {project.cloudflarelink && (
-                <a
+                <motion.a
                   href={project.cloudflarelink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-orange-600 hover:underline gap-1"
+                  className="flex items-center text-orange-500 hover:text-orange-600 gap-1 px-3 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "rgba(249, 115, 22, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaCloud /> Cloudflare
-                </a>
+                  <FaCloud className="text-sm" /> Cloudflare
+                </motion.a>
               )}
               {project.frontendRepo && (
-                <a
+                <motion.a
                   href={project.frontendRepo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-orange-600 hover:underline gap-1"
+                  className="flex items-center text-gray-700 hover:text-gray-900 gap-1 px-3 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "rgba(55, 65, 81, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaGithub /> Frontend
-                </a>
+                  <FaGithub className="text-sm" /> Frontend
+                </motion.a>
               )}
               {project.backendRepo && (
-                <a
+                <motion.a
                   href={project.backendRepo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center text-orange-600 hover:underline gap-1"
+                  className="flex items-center text-gray-700 hover:text-gray-900 gap-1 px-3 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "rgba(55, 65, 81, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <FaGithub /> Backend
-                </a>
+                  <FaGithub className="text-sm" /> Backend
+                </motion.a>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
       ))}
     </div>
@@ -593,6 +687,158 @@ const Portfolio = () => {
           <p className="text-lg">© 2025 Yashwanth Munikuntla </p>
         </footer>
       </div>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedProject(null)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          
+          {/* Modal Content */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/30"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:text-orange-600 transition-colors duration-300 z-10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </motion.button>
+
+            {/* Project Header */}
+            <div className="p-8 pb-4">
+              <motion.h2 
+                className="text-4xl font-bold text-center mb-6 text-orange-600"
+                style={{
+                  textShadow: '2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000'
+                }}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {selectedProject.name}
+              </motion.h2>
+
+              {/* Project Type Badge */}
+              <motion.div
+                className="flex justify-center mb-6"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div
+                  className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
+                    selectedProject.type === "major" 
+                      ? "bg-orange-100 text-orange-700" 
+                      : "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {selectedProject.type === "major" ? "Major Project" : "Minor Project"}
+                </div>
+              </motion.div>
+
+              {/* Links Section */}
+              <motion.div 
+                className="flex flex-wrap justify-center gap-4 mb-8"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {selectedProject.link && (
+                  <motion.a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-orange-600 hover:text-orange-700 gap-2 px-4 py-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaExternalLinkAlt /> Live Demo
+                  </motion.a>
+                )}
+                {selectedProject.vercellink && (
+                  <motion.a
+                    href={selectedProject.vercellink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-700 hover:text-gray-900 gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaCloud /> Vercel
+                  </motion.a>
+                )}
+                {selectedProject.cloudflarelink && (
+                  <motion.a
+                    href={selectedProject.cloudflarelink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-orange-500 hover:text-orange-600 gap-2 px-4 py-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaCloud /> Cloudflare
+                  </motion.a>
+                )}
+                {selectedProject.frontendRepo && (
+                  <motion.a
+                    href={selectedProject.frontendRepo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-700 hover:text-gray-900 gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaGithub /> Frontend
+                  </motion.a>
+                )}
+                {selectedProject.backendRepo && (
+                  <motion.a
+                    href={selectedProject.backendRepo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-gray-700 hover:text-gray-900 gap-2 px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaGithub /> Backend
+                  </motion.a>
+                )}
+              </motion.div>
+
+              {/* Project Body */}
+              <motion.div
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <motion.p 
+                  className="text-gray-800 leading-relaxed text-lg whitespace-pre-line"
+                >
+                  {selectedProject.body}
+                </motion.p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
     </>
   );
