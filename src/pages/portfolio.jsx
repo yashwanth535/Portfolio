@@ -21,24 +21,71 @@ const Portfolio = () => {
   const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 });
 
   const majorProjects = [
+    // {
+    //   name: "TeamSync",
+    //   description: "A real-time team collaboration platform for seamless project management.",
+    //   image: "/teamsync.png",
+    //   link: "https://teamsync.yashwanth.site/",
+    //   type: "major",
+    //   hidden: true
+    // },
+    // PrintEase (keep data, do not show)
     {
-      name: "Flavour Fusion",
-      description: "Discover and share unique recipes with a vibrant food community.",
-      image: "/fusion.png",
-      link: "https://fusion.yashwanth.site",
+      name: "PrintEase",
+      description: "A website to share PDFs with printing shops for streamlined printing.",
+      image: "/printease.png",
+      link: "https://printease.yashwanth.site/",
+      type: "major",
+      hidden: true
     },
+    // Kriya (url pinger, show, update name, link, image)
     {
       name: "Kriya",
       description: "Monitor the uptime and response time of your favorite URLs.",
       image: "/kriya.png",
       link: "https://kriya.yashwanth.site",
+      type: "major"
     },
+    // InShareX (show, update image if needed)
     {
       name: "InShareX",
       description: "A fast and secure file sharing platform for all your needs.",
       image: "/insharex.png",
       link: "https://insharex.yashwanth.site/",
+      type: "major"
     },
+    // Flavour Fusion (show, update link and image)
+    {
+      name: "Flavour Fusion",
+      description: "Discover and share unique recipes with a vibrant food community.",
+      image: "/fusion.png",
+      link: "https://fusion.yashwanth.site",
+      type: "major"
+    },
+    // MoneyMind (show as minor)
+    {
+      name: "MoneyMind",
+      description: "A website to track your finances, create budgets, savings, etc.",
+      image: "/moneymind.png",
+      link: "https://moneymind.yashwanth.site/",
+      type: "minor"
+    },
+    // SkyWatch (show as minor)
+    {
+      name: "SkyWatch",
+      description: "A weather monitoring and alert system for your local area.",
+      image: "/skywatch.png",
+      link: "https://skywatch.yashwanth.site/",
+      type: "minor"
+    },
+    {
+      name: "Dispensary Management System",
+      description: "Streamlines patient records, medicine inventory, and appointment tracking for efficient dispensary operations.",
+      image: "/dispensary.png",
+      link: "https://dispensarymanagement.yashwanth.site/",
+      type: "minor"
+    },
+    
   ];
 
   useEffect(() => {
@@ -354,79 +401,62 @@ const Portfolio = () => {
 
           {/* --- UPDATED PROJECTS SECTION --- */}
           <motion.section
-            id="projects"
-            ref={projectsRef}
-            initial="hidden"
-            animate={projectsVisible ? "visible" : "hidden"}
-            variants={fadeInUp}
-            transition={{ duration: 0.6 }}
-            className="backdrop-blur-lg bg-white/20 rounded-2xl py-8 mb-12 shadow-xl border border-white/30 relative"
+  id="projects"
+  ref={projectsRef}
+  initial="hidden"
+  animate={projectsVisible ? "visible" : "hidden"}
+  variants={fadeInUp}
+  transition={{ duration: 0.6 }}
+  className=" py-8 mb-12 border-white/30 relative"
+>
+  <div className="flex items-center mb-6 relative px-8">
+    <button
+      onClick={() => navigate("/projects")}
+      className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold absolute right-6 top-0"
+    >
+      Projects
+    </button>
+    <motion.h2
+      className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent mx-auto"
+      transition={{ duration: 0.2 }}
+    >
+      Projects
+    </motion.h2>
+  </div>
+
+  <div className="relative px-8">
+    {/* Timeline Line */}
+    <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-orange-400 z-0" />
+
+    {/* Timeline Items */}
+    <div className="space-y-16 relative z-10">
+      {majorProjects.map((project, index) => (
+        <div
+          key={project.name}
+          className={`relative flex items-center w-full ${
+            index % 2 === 0 ? "justify-start" : "justify-end"
+          }`}
+        >
+          {/* Connector Dot */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-orange-500 border-4 border-white rounded-full z-10" />
+
+          {/* Content Card */}
+          <div
+            className={`w-full md:w-1/2 p-6 rounded-lg shadow-md bg-white/40 backdrop-blur-md ${
+              index % 2 === 0 ? "ml-10" : "mr-2"
+            }`}
           >
-            <div className="flex items-center mb-6 relative px-8">
-              <button
-                onClick={() => navigate("/projects")}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold absolute right-6 top-0"
-              >
-                Projects
-              </button>
-              <motion.h2
-                className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent mx-auto"
-                transition={{ duration: 0.2 }}
-              >
-                Projects
-              </motion.h2>
-            </div>
-            <div className="relative">
-              <motion.div
-                ref={projectsContainerRef}
-                drag="x"
-                dragConstraints={dragConstraints}
-                className="flex overflow-x-auto gap-6 pb-4 px-8"
-                style={{
-                  scrollbarWidth: 'none', /* Firefox */
-                  msOverflowStyle: 'none'  /* Internet Explorer 10+ */
-                }}
-                css={{
-                  '&::-webkit-scrollbar': {
-                    display: 'none' /* Safari and Chrome */
-                  }
-                }}
-              >
-                {majorProjects.map((project) => (
-                  <motion.div
-                    key={project.name}
-                    className="flex-shrink-0 w-[80vw] md:w-[30vw] md:max-w-[400px] bg-white/30 rounded-xl overflow-hidden shadow-lg transition-all duration-300 backdrop-blur-sm"
-                    whileHover={{
-                      scale: 1.03,
-                      backgroundColor: "rgba(255,255,255,0.4)",
-                    }}
-                  >
-                    <img
-                      src={project.image}
-                      alt={`${project.name} preview`}
-                      className="w-full h-56 object-cover pointer-events-none"
-                    />
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold mb-2 gradient-text">
-                        {project.name}
-                      </h3>
-                      <p className="text-gray-700 mb-4">{project.description}</p>
-                      <motion.a
-                        whileHover={{ backgroundColor: "#ea580c" }}
-                        whileTap={{ scale: 0.95 }}
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg transition-all duration-300"
-                      >
-                        Visit Project
-                      </motion.a>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.section>
+            <h3 className="text-2xl font-bold text-orange-600 mb-2">
+              {project.name}
+            </h3>
+            <p className="text-gray-800">{project.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</motion.section>
+
           <motion.section
             id="contact"
             ref={contactRef}
