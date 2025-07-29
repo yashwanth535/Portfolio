@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FaExternalLinkAlt, FaGithub, FaCloud } from "react-icons/fa";
 import profilePhoto from "../assets/profile.jpeg";
 
 const Portfolio = () => {
@@ -35,8 +36,10 @@ const Portfolio = () => {
       description: "A website to share PDFs with printing shops for streamlined printing.",
       image: "/printease.png",
       link: "https://printease.yashwanth.site/",
+      vercellink:"https://print-ease-frontend.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/PrintEase-frontend",
+      backendRepo:"https://github.com/yashwanth535/PrintEase-backend",
       type: "major",
-      hidden: true
     },
     // Kriya (url pinger, show, update name, link, image)
     {
@@ -44,6 +47,9 @@ const Portfolio = () => {
       description: "Monitor the uptime and response time of your favorite URLs.",
       image: "/kriya.png",
       link: "https://kriya.yashwanth.site",
+      vercellink:"https://kriya-frontend-ten.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/Kriya-frontend",
+      backendRepo:"https://github.com/yashwanth535/Kriya-backend",
       type: "major"
     },
     // InShareX (show, update image if needed)
@@ -52,6 +58,9 @@ const Portfolio = () => {
       description: "A fast and secure file sharing platform for all your needs.",
       image: "/insharex.png",
       link: "https://insharex.yashwanth.site/",
+      vercellink:"https://insharex-frontend.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/InShareX-frontend",
+      backendRepo:"https://github.com/yashwanth535/InShareX-backend",
       type: "major"
     },
     // Flavour Fusion (show, update link and image)
@@ -60,6 +69,9 @@ const Portfolio = () => {
       description: "Discover and share unique recipes with a vibrant food community.",
       image: "/fusion.png",
       link: "https://fusion.yashwanth.site",
+      vercellink:"https://fusion-frontend-omega.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/Fusion-frontend",
+      backendRepo:"https://github.com/yashwanth535/Fusion-backend",
       type: "major"
     },
     // MoneyMind (show as minor)
@@ -68,6 +80,9 @@ const Portfolio = () => {
       description: "A website to track your finances, create budgets, savings, etc.",
       image: "/moneymind.png",
       link: "https://moneymind.yashwanth.site/",
+      vercellink:"https://moneymind-frontend.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/MoneyMind-frontend",
+      backendRepo:"https://github.com/yashwanth535/MoneyMind-backend",
       type: "minor"
     },
     // SkyWatch (show as minor)
@@ -76,6 +91,8 @@ const Portfolio = () => {
       description: "A weather monitoring and alert system for your local area.",
       image: "/skywatch.png",
       link: "https://skywatch.yashwanth.site/",
+      vercellink:"https://skywatch.vercel.app/",
+      frontendRepo:"https://github.com/yashwanth535/SkyWatch",
       type: "minor"
     },
     {
@@ -83,6 +100,8 @@ const Portfolio = () => {
       description: "Streamlines patient records, medicine inventory, and appointment tracking for efficient dispensary operations.",
       image: "/dispensary.png",
       link: "https://dispensarymanagement.yashwanth.site/",
+      cloudflarelink:"https://patient-prescription.pages.dev/",
+      frontendRepo:"https://github.com/yashwanth535/patient-prescription",
       type: "minor"
     },
     
@@ -407,15 +426,9 @@ const Portfolio = () => {
   animate={projectsVisible ? "visible" : "hidden"}
   variants={fadeInUp}
   transition={{ duration: 0.6 }}
-  className=" py-8 mb-12 border-white/30 relative"
+  className="py-8 mb-12 border-white/30 relative"
 >
   <div className="flex items-center mb-6 relative px-8">
-    <button
-      onClick={() => navigate("/projects")}
-      className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold absolute right-6 top-0"
-    >
-      Projects
-    </button>
     <motion.h2
       className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent mx-auto"
       transition={{ duration: 0.2 }}
@@ -449,14 +462,67 @@ const Portfolio = () => {
             <h3 className="text-2xl font-bold text-orange-600 mb-2">
               {project.name}
             </h3>
-            <p className="text-gray-800">{project.description}</p>
+            <p className="text-gray-800 mb-4">{project.description}</p>
+
+            {/* Links Section */}
+            <div className="flex flex-wrap gap-4 text-sm">
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-orange-600 hover:underline gap-1"
+                >
+                  <FaExternalLinkAlt /> Live Demo
+                </a>
+              )}
+              {project.vercellink && (
+                <a
+                  href={project.vercellink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-orange-600 hover:underline gap-1"
+                >
+                  <FaCloud /> Vercel
+                </a>
+              )}
+              {project.cloudflarelink && (
+                <a
+                  href={project.cloudflarelink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-orange-600 hover:underline gap-1"
+                >
+                  <FaCloud /> Cloudflare
+                </a>
+              )}
+              {project.frontendRepo && (
+                <a
+                  href={project.frontendRepo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-orange-600 hover:underline gap-1"
+                >
+                  <FaGithub /> Frontend
+                </a>
+              )}
+              {project.backendRepo && (
+                <a
+                  href={project.backendRepo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-orange-600 hover:underline gap-1"
+                >
+                  <FaGithub /> Backend
+                </a>
+              )}
+            </div>
           </div>
         </div>
       ))}
     </div>
   </div>
 </motion.section>
-
           <motion.section
             id="contact"
             ref={contactRef}
