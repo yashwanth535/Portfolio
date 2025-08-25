@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FaExternalLinkAlt, FaGithub, FaCloud } from "react-icons/fa";
-import profilePhoto from "../assets/profile.jpeg";
+import profilePhoto from "../assets/profile.png";
 
 const Portfolio = () => {
   const aboutRef = useRef(null);
