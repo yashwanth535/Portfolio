@@ -259,6 +259,7 @@ const Portfolio = () => {
       className="mt-4 md:mt-0 flex flex-wrap gap-4 md:gap-6"
     >
       {[
+        { text: "Resume", id: "resume", isRoute: true },
         { text: "About Me", id: "about" },
         { text: "Skills", id: "skills" },
         { text: "Projects", id: "projects" },
@@ -266,7 +267,7 @@ const Portfolio = () => {
       ].map((item) => (
         <motion.button
           key={item.text}
-          onClick={() => scrollToSection(item.id)}
+          onClick={() => item.isRoute ? navigate('/resume') : scrollToSection(item.id)}
           whileHover={{ scale: 1.05, color: "#f97316" }}
           whileTap={{ scale: 0.95 }}
           className="text-lg font-medium text-gray-800 hover:text-orange-600 transition relative group px-2"
