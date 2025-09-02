@@ -39,20 +39,6 @@ const Portfolio = () => {
   On the backend, we built RESTful APIs in Express.js with JWT authentication for Customers and Vendors, a 50% advance payment flow secured via Stripe, and Socket.io–powered WebSockets to push live order status updates (accepted, printing, out for delivery). We also automated PDF cleanup once jobs complete, and provided PDF preview links in both user and vendor dashboards—resulting in a fully end‑to‑end, real‑time print ordering system.`,
     },
     {
-      name: "Kriya",
-      description: "Monitor the uptime and response time of your favorite URLs.",
-      image: "/kriya.png",
-      link: "https://kriya.yashwanth.site",
-      vercellink: "https://kriya-frontend-ten.vercel.app/",
-      frontendRepo: "https://github.com/yashwanth535/Kriya-frontend",
-      backendRepo: "https://github.com/yashwanth535/Kriya-backend",
-      type: "major",
-      body: `
-  Kriya is a Node.js + Express monitoring tool with a React frontend built on Vite. It allows users to register URLs they want tracked, and runs scheduled health checks using node-cron on the backend to ping these endpoints at configurable intervals. We stored uptime/response metrics in MongoDB and expose them via REST APIs, which power a dynamic dashboard showing historical graphs.
-  
-  To deliver near real‑time alerts, Kriya uses Socket.io for WebSocket notifications: when an endpoint goes down or exceeds a response threshold, users immediately see toast alerts on the frontend and can opt into email notifications. The result is a lightweight but robust uptime monitoring platform with customizable alerts and live stats.`,
-    },
-    {
       name: "InShareX",
       description: "A fast and secure file sharing platform for all your needs.",
       image: "/insharex.png",
@@ -95,6 +81,20 @@ const Portfolio = () => {
   MoneyMind is a personal finance dashboard developed with React (Vite) on the frontend and Express + MongoDB on the backend. It provides expense tracking, budget setup, and savings goals visualization. We integrated Tesseract.js for OCR scanning of receipts so users can snap a photo and automatically log transactions.
   
   The backend offers REST endpoints secured with JWT authentication, and data analytics endpoints that calculate monthly spend breakdowns. We added CSV export and PDF report generation, as well as integration with Chart.js for interactive spending charts. MoneyMind makes budgeting effortless with AI‑powered receipt parsing and rich data visualizations.`,
+    },
+    {
+      name: "Kriya",
+      description: "Monitor the uptime and response time of your favorite URLs.",
+      image: "/kriya.png",
+      link: "https://kriya.yashwanth.site",
+      vercellink: "https://kriya-frontend-ten.vercel.app/",
+      frontendRepo: "https://github.com/yashwanth535/Kriya-frontend",
+      backendRepo: "https://github.com/yashwanth535/Kriya-backend",
+      type: "minor",
+      body: `
+  Kriya is a Node.js + Express monitoring tool with a React frontend built on Vite. It allows users to register URLs they want tracked, and runs scheduled health checks using node-cron on the backend to ping these endpoints at configurable intervals. We stored uptime/response metrics in MongoDB and expose them via REST APIs, which power a dynamic dashboard showing historical graphs.
+  
+  To deliver near real‑time alerts, Kriya uses Socket.io for WebSocket notifications: when an endpoint goes down or exceeds a response threshold, users immediately see toast alerts on the frontend and can opt into email notifications. The result is a lightweight but robust uptime monitoring platform with customizable alerts and live stats.`,
     },
     {
       name: "SkyWatch",
