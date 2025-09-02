@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
+import resumeId from "./resumeId";
 
 const Resume = () => {
+  const url = `https://drive.google.com/file/d/${resumeId}`;
+
   useEffect(() => {
-    window.location.replace('https://drive.google.com/file/d/14Tv3skj79ok-pCidI6N9zM3Uo_CaED8C/view?usp=sharing');
-  }, []);
+    window.location.replace(url);
+  }, [url]);
 
   return (
     <div>
       <h2>Redirecting to Resume...</h2>
-      <p>If you are not redirected, <a href="https://drive.google.com/file/d/14Tv3skj79ok-pCidI6N9zM3Uo_CaED8C/view?usp=sharing" target="_blank" rel="noopener noreferrer">click here</a>.</p>
+      <p>
+        If you are not redirected, <a href={url}>click here</a>.
+      </p>
     </div>
   );
 };
 
-export default Resume; 
+export default Resume;

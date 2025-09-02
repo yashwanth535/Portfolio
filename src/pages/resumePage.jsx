@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaDownload, FaExternalLinkAlt, FaArrowLeft, FaHome } from "react-icons/fa";
-
+import resumeId from './resumeId'
 const Resume = () => {
   const [particles, setParticles] = useState([]);
   
   // Google Drive URLs
-  const resumeUrl = "https://drive.google.com/file/d/14Tv3skj79ok-pCidI6N9zM3Uo_CaED8C";
-  const resumeEmbedUrl = `${resumeUrl}/preview`;
-  const resumeDownloadUrl = `https://drive.google.com/uc?export=download&id=14Tv3skj79ok-pCidI6N9zM3Uo_CaED8C`;
-  const resumeViewUrl = `${resumeUrl}/view?usp=sharing`;
+  const resumeUrl = `https://drive.google.com/file/d/${resumeId}`;
+  const resumeViewUrl = `https://drive.google.com/file/d/${resumeId}/view?usp=sharing`;
+  const resumeEmbedUrl = `https://drive.google.com/file/d/${resumeId}/preview`;
+  const resumeDownloadUrl = `https://drive.google.com/uc?export=download&id=${resumeId}`;
+
 
   React.useEffect(() => {
     const particleCount = 30;
